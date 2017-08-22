@@ -23,7 +23,7 @@ sudo yum install geos-devel
 ### WHAT ELSE FROM KEVIN FOR GEOSPATIAL STUFF
 
 chmod +x /data/MIDS_w205_FinalProject/sql_files/sql_file_creation.sql
-psql --username=postgres -d final_project -f /data/MIDS_w205_FinalProject/sql_files/sql_file_creation.sql
+psql --username=postgres -d MIDS_w205_FinalProject -f /data/MIDS_w205_FinalProject/sql_files/sql_file_creation.sql
 
 chmod +x /data/MIDS_w205_FinalProject/python_to_postgres_files/bus_route_stop_to_postgres.py
 chmod +x /data/MIDS_w205_FinalProject/python_to_postgres_files/bus_stop_to_postgres.py
