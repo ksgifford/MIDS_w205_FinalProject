@@ -5,7 +5,7 @@ cur = conn.cursor()
 
 
 
-file = open('/data/final_project/clean_data/bus/bus_route_stops_noH.txt', 'r')
+file = open('/data/MIDS_w205_FinalProject/clean_data/bus/bus_route_stops_noH.txt', 'r')
 lines = file.readlines()
 
 for line in lines:

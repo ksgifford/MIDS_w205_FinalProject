@@ -50,16 +50,6 @@ print 'Performing spatial join...'
 geodf_spjoin = sjoin(geodf_crime, geodf_bus, how = 'inner')
 print(geodf_spjoin.head())
 
-#Store output as ESRI shapefile
-make_shp = raw_input('Would you like to create shapefiles? This could take a while. (y/n): ')
-if make_shp.upper() == 'Y':
-    print 'Writing shapefiles...'
-    geodf_bus.to_file(driver = 'ESRI Shapefile', filename = './bus_stop_buffer.shp')
-    geodf_crime.to_file(driver = 'ESRI Shapefile', filename = './crime_points.shp')
-    geodf_spjoin.to_file(driver = 'ESRI Shapefile', filename = './spatial_join.shp')
-    print 'Shapefile export complete.'
-else: print 'Skipping shapefile export.'
-
 #Output dataframe to postgres
 print 'Writing spatial join geodataframe to postgres...'
 geodf_spjoin['geometry'] = geodf_spjoin['geometry'].apply(wkb_hexer)

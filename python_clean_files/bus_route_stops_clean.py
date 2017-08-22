@@ -16,10 +16,10 @@ schema_Ftrips = 'route_id trip_id trip_headsign'
 schema_Froutes = 'route_id agency_id route_short_name route_desc'
 # schema_stop_times = 'trip_id arrival_time departure_time stop_id stop_sequence stop_headsign pickup_type drop_off_type shape_dist_traveled'
 schema_stop_times = 'trip_id stop_id'
-file_list = ['/data/final_project/raw_data/bus/Fstops_noH.txt',
-             '/data/final_project/raw_data/bus/Ftrips_noH.txt',
-             '/data/final_project/raw_data/bus/Froutes_noH.txt',
-             '/data/final_project/raw_data/bus/stop_times_noH.txt']
+file_list = ['/data/MIDS_w205_FinalProject/raw_data/bus/Fstops_noH.txt',
+             '/data/MIDS_w205_FinalProject/raw_data/bus/Ftrips_noH.txt',
+             '/data/MIDS_w205_FinalProject/raw_data/bus/Froutes_noH.txt',
+             '/data/MIDS_w205_FinalProject/raw_data/bus/stop_times_noH.txt']
 hdfs_str_start = 'file://'
 
 
@@ -77,7 +77,7 @@ print bus_stop_info
 
 
 # for bus in Froutes_df.rdd.collect():
-with open('/data/final_project/clean_data/bus/bus_route_stops_noH.txt', 'a') as outfile:
+with open('/data/MIDS_w205_FinalProject/clean_data/bus/bus_route_stops_noH.txt', 'a') as outfile:
     for bus in Froutes_df.rdd.collect():
         print bus.route_short_name
         bus_route_to_trips = Froutes_df.filter(Froutes_df["route_short_name"] == bus.route_short_name).select('route_id').collect()[0][0]
