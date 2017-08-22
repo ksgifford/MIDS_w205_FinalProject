@@ -12,4 +12,4 @@ wget -O /data/MIDS_w205_FinalProject/raw_data/crime/Seattle_Police_Department_91
 wait
 
 #Run .sql script to update crime table in postgres
-psql -d "$2" -U "$3" -f $CRIME_DIR/create_postgres_crime.sql
+psql -d "$2" -U "$3" -f ./python_to_postgres_files/create_postgres_crime.sql
