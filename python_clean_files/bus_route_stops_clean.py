@@ -8,7 +8,6 @@ sc =SparkContext()
 sqlContext = SQLContext(sc)
 
 
-# schema_Fstops = 'stop_id stop_code stop_name stop_desc stop_lat stop_lon zone_id stop_url location_type parent_station stop_timezone'
 schema_Fstops = 'stop_id stop_name stop_lat stop_lon'
 # schema_Ftrips = 'route_id service_id trip_id trip_headsign trip_short_name direction_id block_id shape_id peak_flag fare_id'
 schema_Ftrips = 'route_id trip_id trip_headsign'
