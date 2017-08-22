@@ -153,4 +153,5 @@ CREATE TABLE seattle_crime
           event_clearance_subgroup                                   AS event_clearance_subgroup
         FROM seattle_crime_raw
 WHERE coalesce(event_clearance_group, initial_type_group) NOT IN ('FRAUD CALLS', 'FALSE ALARMS', 'FALSE ALACAD')
+AND cad_cdw_id ~ '^[a-z0-9]*$'
         ;
