@@ -8,7 +8,7 @@ tail -n +2 /data/MIDS_w205_FinalProject/raw_data/bus/routes.txt > /data/MIDS_w20
 tail -n +2 /data/MIDS_w205_FinalProject/raw_data/bus/stops.txt > /data/MIDS_w205_FinalProject/clean_data/bus/stops_noH.txt
 tail -n +2 /data/MIDS_w205_FinalProject/raw_data/bus/trips.txt > /data/MIDS_w205_FinalProject/clean_data/bus/trips_noH.txt
 tail -n +2 /data/MIDS_w205_FinalProject/raw_data/bus/stop_times.txt > /data/MIDS_w205_FinalProject/clean_data/bus/stop_times_noH.txt
-tail -n +2 /data/MIDS_w205_FinalProject/raw_data/crime/Seattle_Police_Department_911_Incident_Response.txt > /data/MIDS_w205_FinalProject/clean_data/crime/Seattle_Police_Department_911_Incident_Response_noH.txt
+tail -n +2 /data/MIDS_w205_FinalProject/raw_data/crime/Seattle_Police_Department_911_Incident_Response.csv > /data/MIDS_w205_FinalProject/clean_data/crime/Seattle_Police_Department_911_Incident_Response_noH.csv
 
 chmod +x /data/MIDS_w205_FinalProject/python_clean_files/bus_route_stops_clean.py
 /home/w205/spark15/bin/spark-submit /data/MIDS_w205_FinalProject/python_clean_files/bus_route_stops_clean.py
