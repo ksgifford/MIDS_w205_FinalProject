@@ -7,21 +7,18 @@ import csv
 sc =SparkContext()
 sqlContext = SQLContext(sc)
 
-
+# create schema for all four dataframes associated with buses, currently one string, but will be split later in code
 schema_Fstops = 'stop_id stop_name stop_lat stop_lon'
-# schema_Ftrips = 'route_id service_id trip_id trip_headsign trip_short_name direction_id block_id shape_id peak_flag fare_id'
 schema_Ftrips = 'route_id trip_id trip_headsign'
-# schema_Froutes = 'route_id agency_id route_short_name route_long_name route_desc route_type route_url route_color route_text_color'
 schema_Froutes = 'route_id agency_id route_short_name route_desc'
-# schema_stop_times = 'trip_id arrival_time departure_time stop_id stop_sequence stop_headsign pickup_type drop_off_type shape_dist_traveled'
 schema_stop_times = 'trip_id stop_id'
+# list of all of the no header txt files associated with buses
 file_list = ['/data/MIDS_w205_FinalProject/clean_data/bus/stops_noH.txt',
              '/data/MIDS_w205_FinalProject/clean_data/bus/trips_noH.txt',
              '/data/MIDS_w205_FinalProject/clean_data/bus/routes_noH.txt',
              '/data/MIDS_w205_FinalProject/clean_data/bus/stop_times_noH.txt']
 hdfs_str_start = 'file://'
-
-
+# loops through each file in above list and creates a temp name and registers the data as a dataframe
 for file in file_list:
     temp_file_loc = hdfs_str_start + file
     temp_data_name = temp_file_loc.split("/")[-1].split("_noH")[0] + "_temp"
@@ -56,44 +53,28 @@ for file in file_list:
         schema = StructType(fields)
         schema_data_temp = sqlContext.createDataFrame(column_map, schema)
         schema_data_temp.registerTempTable(temp_data_name)
-
+# convert data into aql based dataframe
 Ftrips_df = sqlContext.sql('select * FROM  trips_temp')
 Froutes_df = sqlContext.sql('select * FROM  routes_temp')
 stop_times_df = sqlContext.sql('select * FROM  stop_times_temp')
 Fstops_df = sqlContext.sql('select * FROM stops_temp')
-
-# bus_stop = sqlContext.sql('select * FROM Fstops_temp WHERE stop_id = 1110')
-# bus_stop.show()
-
-# bus_stop_info = {}
-# for stop in bus_stop.rdd.collect():
-#     bus_stop_info[stop.stop_id] = {}
-#     bus_stop_info[stop.stop_id]['stop_name'] = stop.stop_name
-#     bus_stop_info[stop.stop_id]['stop_lat'] = stop.stop_lat
-#     bus_stop_info[stop.stop_id]['stop_lon'] = stop.stop_lon
-
-# print bus_stop_info
-
-
-# for bus in Froutes_df.rdd.collect():
+# now goes into bus route and groups by the "route_short_name" then filters out the trip information
+# this is then filtered down to unique identiers of stop id stops with distinct command in pyspark
+# the distinct ids are then merged with stop ids and now we have for each bus route, we have ever 
+# single stop that it makes throughout the day. 
+#
+# This was needed because sometimes the route changes throughout the day depending on the time,
+# so we decided to associated a bus route number with any stop the bus utilizes throughout the day
+#
+# Once that is done it is converted to a textfile to be parsed into postgres later.
 with open('/data/MIDS_w205_FinalProject/clean_data/bus/bus_stop_with_routes.txt', 'a') as outfile:
     for bus in Froutes_df.rdd.collect():
         print bus.route_short_name
         bus_route_to_trips = Froutes_df.filter(Froutes_df["route_short_name"] == bus.route_short_name).select('route_id').collect()[0][0]
-        # bus_route_to_trips
         trip_id_to_stop_times_list = [i.trip_id for i in Ftrips_df.filter(Ftrips_df["route_id"] == bus_route_to_trips).select('trip_id').collect()]
-        # trip_id_to_stop_times_list
         stop_list = [i.stop_id for i in stop_times_df.where(col("trip_id").isin(trip_id_to_stop_times_list)).select('stop_id').distinct().collect()]
-        # stop_list
         bus_stop_by_routes = Fstops_df.where(col("stop_id").isin(stop_list))
-        # bus_stop_by_routes.show(100)
-        # outfile.write(str(bus.route_short_name) + ',')
-        # bus_stop_by_routes_info = {}
         for stop in bus_stop_by_routes.rdd.collect():
-            # bus_stop_by_routes_info[stop.stop_id] = {}
-            # bus_stop_by_routes_info[stop.stop_id]['stop_name'] = stop.stop_name
-            # bus_stop_by_routes_info[stop.stop_id]['stop_lat'] = stop.stop_lat
-            # bus_stop_by_routes_info[stop.stop_id]['stop_lon'] = stop.stop_lon
             outfile.write(bus.route_short_name + ',' + stop.stop_name + ',')
             outfile.write(stop.stop_id)
             outfile.write(',')
@@ -101,8 +82,3 @@ with open('/data/MIDS_w205_FinalProject/clean_data/bus/bus_stop_with_routes.txt'
             outfile.write(',')
             outfile.write(stop.stop_lon)
             outfile.write('\n')
-        # outfile.write(str(bus_stop_by_routes_info))
-        # outfile.write('\n')
-
-
-    # bus_stop_by_routes_info.saveAsTextFile('file///home/w205/test.txt')
