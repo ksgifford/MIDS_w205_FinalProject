@@ -19,8 +19,9 @@ chmod +x *.sh
 ./Anaconda2-4.1.1-Linux-x86_64.sh
 /root/anaconda2/bin/pip install psycopg2==2.6.2
 /root/anaconda2/bin/pip install geopandas
+/root/anaconda2/bin/pip install sqlalchemy
 sudo yum install geos-devel
-### WHAT ELSE FROM KEVIN FOR GEOSPATIAL STUFF
+
 
 chmod +x /data/MIDS_w205_FinalProject/sql_files/sql_file_creation.sql
 psql --username=postgres -d MIDS_w205_FinalProject -f /data/MIDS_w205_FinalProject/sql_files/sql_file_creation.sql
@@ -30,6 +31,9 @@ chmod +x /data/MIDS_w205_FinalProject/python_to_postgres_files/bus_stop_to_postg
 python /data/MIDS_w205_FinalProject/python_to_postgres_files/bus_route_stop_to_postgres.py
 python /data/MIDS_w205_FinalProject/python_to_postgres_files/bus_stop_to_postgres.py
 
-
-#### NEED FROM KEVIN THE GEOSPATIAL STUFF
 #### NEED FROM JAY THE CRIME STUFF
+
+
+
+#### GEOSPATIAL PROCESSING
+python /data/MIDS_w205_FinalProject/spatial/geodf_processing.py
