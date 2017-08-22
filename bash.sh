@@ -2,8 +2,7 @@
 
 wget http://metro.kingcounty.gov/GTFS/google_daily_transit.zip -P /data/MIDS_w205_FinalProject/raw_data/bus
 unzip -d /data/MIDS_w205_FinalProject/raw_data/bus /data/MIDS_w205_FinalProject/raw_data/bus/google_daily_transit.zip
-
-#### NEED FROM JAY HOW TO GET THE CRIME DATA
+wget -O /data/MIDS_w205_FinalProject/raw_data/crime/Seattle_Police_Department_911_Incident_Response.csv https://data.seattle.gov/d/3k2p-39jp?category=Public-Safety&view_name=Seattle-Police-Department-911-Incident-Response
 
 tail -n +2 /data/MIDS_w205_FinalProject/raw_data/bus/routes.txt > /data/MIDS_w205_FinalProject/clean_data/bus/routes_noH.txt
 tail -n +2 /data/MIDS_w205_FinalProject/raw_data/bus/stops.txt > /data/MIDS_w205_FinalProject/clean_data/bus/stops_noH.txt
@@ -30,10 +29,6 @@ chmod +x /data/MIDS_w205_FinalProject/python_to_postgres_files/bus_route_stop_to
 chmod +x /data/MIDS_w205_FinalProject/python_to_postgres_files/bus_stop_to_postgres.py
 python /data/MIDS_w205_FinalProject/python_to_postgres_files/bus_route_stop_to_postgres.py
 python /data/MIDS_w205_FinalProject/python_to_postgres_files/bus_stop_to_postgres.py
-
-#### NEED FROM JAY THE CRIME STUFF
-
-
 
 #### GEOSPATIAL PROCESSING
 python /data/MIDS_w205_FinalProject/spatial/geodf_processing.py
