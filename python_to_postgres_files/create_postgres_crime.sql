@@ -1,5 +1,12 @@
+-- This file creates the postgres tables that will be used to store
+-- crime data required by the Transit Risk Pipeline
+
+-- drops the seattle_crime_raw data to ensure it can be udpated
 drop table seattle_crime_raw;
 
+-- creates a raw table that will hold the contents
+-- of the 911 call data downloaded from 
+-- Seattle.gov site
 create table seattle_crime_raw (
  cad_cdw_id                  varchar(100),
  cad_event_number            bigint,
@@ -20,11 +27,18 @@ create table seattle_crime_raw (
  initial_type_subgroup             varchar(100),
  initial_type_group                    varchar(100),
  at_scene_time                         timestamp);
-
+ 
+-- This command copies the contents of the 911 call data into
+-- the seattle_crime_raw table
 COPY seattle_crime_raw FROM '/data/MIDS_w205_FinalProject/raw_data/crime/Seattle_Police_Department_911_Incident_Response.csv' CSV HEADER QUOTE '"';
 
+-- drops the seattle_crime table to ensure it can be updated
 drop table seattle_crime;
 
+-- creates the seattle_crime table which will hold the cleaned
+-- version of the 911 call data taken from temporary table
+-- seattle_crime_raw and introducing a number of derived columns
+-- that will make it easier for analysis and visualizations
 CREATE TABLE seattle_crime
         AS
         SELECT
